@@ -71,6 +71,5 @@ coachtech 勤怠管理アプリは、機能や画面をシンプルにして使�
 
 ## URL
 
-- MailHog：http://localhost:8025
-- Stripe：https://dashboard.stripe.com/
+- 
 
