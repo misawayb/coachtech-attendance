@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') | coachtech 勤怠管理</title>
-    <link rel="stylesheet" href="{{ asset('sanitize.css') }}">
-    <link rel="stylesheet" href="{{ asset('common.css') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @yield('css')
 </head>
 
@@ -18,11 +17,15 @@
             </a>
         </p>
         @auth
-            <nav class="header-nav">
-            <a class="nav-login" href="/login">ログイン</a>
-            <a class="nav-mypage" href="/mypage">マイページ</a>
-            <a class="nav-sell" href="/sell">出品</a>
-            </nav>
+        <nav class="header-nav">
+            <a class="nav-login" href="">勤怠</a>
+            <a class="nav-mypage" href="">勤怠一覧</a>
+            <a class="nav-sell" href="">申請</a>
+            <form class="logout" action="/logout" method="post">
+                @csrf
+                <button class="nav-logout" type="submit">ログアウト</button>
+            </form>
+        </nav>
         @endauth
     </header>
     <main>

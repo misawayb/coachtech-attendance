@@ -39,3 +39,10 @@ services:
     ports:
       - 8080:80
 
+  node:
+    image: node:lts
+    volumes:
+      - ./src:/var/www/
+    working_dir: /var/www
+    command: sh -c "npm install && npm run dev"
+
