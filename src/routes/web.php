@@ -8,5 +8,10 @@ Route::get('/', function () {
 
 // 仮で/home attendance作れたらconfig/fortify変更する
 Route::get('/home', function () {
-    return 'ログイン成功！';
+    return view('layouts.app');
 });
+
+Route::get('/admin/login', function() {
+    return view('admin.login');
+})->name('admin.login');
+

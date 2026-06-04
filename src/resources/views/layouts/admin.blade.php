@@ -6,29 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') | coachtech 勤怠管理</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @yield('css')
 </head>
 
 <body>
-    <header>
-        <p class="header-logo">
+    <header class="flex row w-full h-[80px] bg-black items-center justify-between">
+        <p class="mx-4 shrink-0">
             <a href="/">
                 <img src=" {{ asset( 'image/coachtech_header_logo.png' )}}" alt="COACHTECHロゴ">
             </a>
         </p>
         @auth
-        <nav class="header-nav">
-            <a class="nav-login" href="">勤怠一覧</a>
-            <a class="nav-mypage" href="">スタッフ一覧</a>
-            <a class="nav-sell" href="">申請一覧</a>
-            <form class="logout" action="/logout" method="post">
+        <nav class="flex items-center shrink-0">
+            <a class="mr-8 text-2xl font-bold text-white" href="">勤怠一覧</a>
+            <a class="mr-8 text-2xl font-bold text-white" href="">スタッフ一覧</a>
+            <a class="mr-8 text-2xl font-bold text-white" href="">申請一覧</a>
+            <form action="/logout" method="post">
                 @csrf
-                <button class="nav-logout" type="submit">ログアウト</button>
+                <button class="mr-8 text-2xl font-bold text-white" type="submit">ログアウト</button>
             </form>
         </nav>
         @endauth
     </header>
-    <main>
+    <main class="flex justify-center min-h-screen">
         @yield('content')
     </main>
 </body>
