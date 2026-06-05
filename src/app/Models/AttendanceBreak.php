@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class AttendanceBreak extends Model
 {
-    //
+    protected $fillable = ['attendance_record_id', 'break_in', 'break_out'];
+
+    public function attendanceRecord ()
+    {
+        return $this->belongsTo(AttendanceRecord::class);
+    }
 }
