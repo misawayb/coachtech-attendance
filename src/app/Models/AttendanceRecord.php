@@ -27,4 +27,12 @@ class AttendanceRecord extends Model
     {
         return $this->hasMany(AttendanceCorrectRequest::class);
     }
+
+    public function getStatusAttribute(): string
+    {
+        if ($this->clock_out) return '退勤済';
+        if ($this->activeBreak) return '休憩中';
+
+        return '出勤中';
+    }
 }

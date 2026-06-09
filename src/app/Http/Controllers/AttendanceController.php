@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use Illuminate\Http\Request;
+use App\Models\AttendanceRecord;
 
 class AttendanceController extends Controller
 {
@@ -15,12 +16,22 @@ class AttendanceController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $user = auth()->user();
+        $today = now()->isoFormat('YYYY年M月D日(ddd)');
+        $time = now()->format('H:i');
+        $todayRecord = AttendanceRecord::where('user_id', $user->id)
+            ->where('date', today())
+            ->first();
+
+        if ($todayRecord === null) {
+            $status = '勤務外';
+        } else {
+            $status = $todayRecord->status;
+        }
+
+        return view('/attendance', compact('user', 'today', 'time', 'status', 'todayRecord'));
     }
 
     /**

@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <header class="flex row w-full h-[80px] bg-black items-center justify-between">
+    <header class="flex row w-full fixed top-0 h-20 bg-black items-center justify-between">
         <p class="mx-4 shrink-0">
             <a href="/">
                 <img src=" {{ asset( 'image/coachtech_header_logo.png' )}}" alt="COACHTECHロゴ">
