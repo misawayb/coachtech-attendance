@@ -9,6 +9,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\StampCorrectionRequestController;
 
 
+Route::get('/', [AttendanceController::class, 'index']);
 Route::get('/login',[LoginController::class,'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 Route::get('/admin/login', [AdminLoginController::class, 'index'])->name('admin.login');

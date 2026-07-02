@@ -13,10 +13,10 @@ class AdminMiddleware
     {
         $user = auth()->user();
 
-        if ($user->admin_status) {
-            return $next($request);
-        } else {
+        if (!$user || !$user->admin_status) {
             return redirect('/');
         }
+
+        return $next($request);
     }
 }
