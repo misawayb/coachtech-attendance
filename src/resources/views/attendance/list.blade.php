@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-一覧
+勤怠一覧
 @endsection
 
 @section('content')
@@ -15,7 +15,7 @@
         </div>
         <div class="border-4 border-[#F0EFF2] rounded-2xl overflow-hidden">
             <table class="w-full text-center font-bold">
-                <tr class="bg-white text-[#737373] border-b-4 border-[#F0EFF2]">
+                <tr class="bg-white text-[#737373] border-b-8 border-[#F0EFF2]">
                     <th class="py-3">日付</th>
                     <th class="py-3">出勤</th>
                     <th class="py-3">退勤</th>
