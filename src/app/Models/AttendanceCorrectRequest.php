@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AttendanceCorrectRequest extends Model
 {
-    protected $fillable = ['attendance_record_id', 'clock_in', 'clock_put', 'comment', 'status', 'approved_by'];
+    protected $fillable = ['attendance_record_id', 'clock_in', 'clock_out', 'comment', 'status', 'approved_by'];
 
     public function user ()
     {

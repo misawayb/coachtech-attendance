@@ -19,8 +19,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/attendance', [AttendanceController::class, 'create'])->name('attendance.create');
     Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
     Route::get('/attendance/list', [AttendanceController::class, 'show'])->name('attendance.show');
-    Route::get('/attendance/detail/{id}', [AttendanceController::class, 'edit'])->name('attendance.edit');
-    Route::post('/attendance/detail/{id}', [StampCorrectionRequestController::class, 'store'])->name('request.store');
+    Route::get('/attendance/detail/{date}', [AttendanceController::class, 'edit'])->name('attendance.edit');
+    Route::post('/attendance/detail/{date}', [StampCorrectionRequestController::class, 'store'])->name('request.store');
     Route::get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'index'])->name('request.index');
     Route::post('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'show'])->name('request.show');
 });
