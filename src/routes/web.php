@@ -31,7 +31,8 @@ Route::middleware('admin')->group(function(){
     Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'edit'])->name('admin.edit');
     Route::post('/admin/attendance/{id}', [AdminAttendanceController::class, 'update'])->name('admin.update');
     Route::get('/admin/staff/list', [AdminAttendanceController::class, 'staffIndex'])->name('staff.index');
-    Route::get('/admin/attendance/staff/{id}', [AdminAttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/admin/stamp_correction_request/list', [AdminStampCorrectionRequestController::class, 'index'])->name('admin.request.index');
+    Route::get('/admin/attendance/staff/{id}', [AdminAttendanceController::class, 'staffAttendance'])->name('attendance.index');
     Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminStampCorrectionRequestController::class, 'show'])->name('correction.show');
     Route::post('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminStampCorrectionRequestController::class, 'store'])->name('correction.update');
 });

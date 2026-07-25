@@ -18,9 +18,9 @@
         </p>
         @auth
         <nav class="flex items-center shrink-0">
-            <a class="mr-8 text-2xl font-bold text-white" href="">勤怠</a>
-            <a class="mr-8 text-2xl font-bold text-white" href="">勤怠一覧</a>
-            <a class="mr-8 text-2xl font-bold text-white" href="">申請</a>
+            <a class="mr-8 text-2xl font-bold text-white" href="{{ route('attendance.create') }}">勤怠</a>
+            <a class="mr-8 text-2xl font-bold text-white" href="{{ route('attendance.show') }}">勤怠一覧</a>
+            <a class="mr-8 text-2xl font-bold text-white" href="{{ route('request.index') }}">申請</a>
             <form action="/logout" method="post">
                 @csrf
                 <button class="mr-8 text-2xl font-bold text-white" type="submit">ログアウト</button>

@@ -17,9 +17,9 @@
         </p>
         @auth
         <nav class="flex items-center shrink-0">
-            <a class="mr-8 text-2xl font-bold text-white" href="">勤怠一覧</a>
-            <a class="mr-8 text-2xl font-bold text-white" href="">スタッフ一覧</a>
-            <a class="mr-8 text-2xl font-bold text-white" href="">申請一覧</a>
+            <a class="mr-8 text-2xl font-bold text-white" href="{{ route('admin.index') }}">勤怠一覧</a>
+            <a class="mr-8 text-2xl font-bold text-white" href="{{ route('staff.index') }}">スタッフ一覧</a>
+            <a class="mr-8 text-2xl font-bold text-white" href="{{ route('admin.request.index') }}">申請一覧</a>
             <form action="/logout" method="post">
                 @csrf
                 <button class="mr-8 text-2xl font-bold text-white" type="submit">ログアウト</button>

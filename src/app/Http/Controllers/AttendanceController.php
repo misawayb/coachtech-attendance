@@ -12,12 +12,9 @@ use Carbon\CarbonPeriod;
 
 class AttendanceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('attendance.stamp');
+        return redirect()->route('attendance.create');
     }
 
     public function create()
@@ -91,37 +88,12 @@ class AttendanceController extends Controller
 
             $displayDate = $day->isoFormat('MM/DD(ddd)');
 
-            if ($record) {
-                $clockIn = $record->clock_in ? Carbon::parse($record->clock_in)->format('H:i') : '';
-                $clockOut = $record->clock_out ? Carbon::parse($record->clock_out)->format('H:i') : '';
-                $breakMinutes = $record->attendanceBreak->sum(function ($break) {
-                    if (!$break->break_in || !$break->break_out) {
-                        return 0;
-                    }
-                    return Carbon::parse($break->break_in)->diffInMinutes($break->break_out);
-                });
-                if ($record->clock_in && $record->clock_out) {
-
-                    $workMinutes = Carbon::parse($record->clock_in)->diffInMinutes($record->clock_out) - $breakMinutes;
-                } else {
-                    $workMinutes = null;
-                }
-            } else {
-                $clockIn = '';
-                $clockOut = '';
-                $breakMinutes = 0;
-                $workMinutes = null;
-            }
-
-            $breakTime = $breakMinutes > 0 ? sprintf('%d:%02d', intdiv($breakMinutes, 60), $breakMinutes % 60) : '';
-            $workTime = $workMinutes !== null ? sprintf('%d:%02d', intdiv($workMinutes, 60), $workMinutes % 60) : '';
-
             $attendanceList[] = [
                 'date' => $displayDate,
-                'clockIn' => $clockIn,
-                'clockOut' => $clockOut,
-                'breakTime' => $breakTime,
-                'workTime' => $workTime,
+                'clockIn' => $record && $record->clock_in ? Carbon::parse($record->clock_in)->format('H:i') : '',
+                'clockOut' => $record && $record->clock_out ? Carbon::parse($record->clock_out)->format('H:i') : '',
+                'breakTime' => $record ? $record->break_time : '',
+                'workTime' => $record ? $record->work_time : '',
                 'editUrl' => route('attendance.edit', ['date' => $day->toDateString()]),
             ];
         }
@@ -144,11 +116,35 @@ class AttendanceController extends Controller
             'date' => $targetDate,
         ]);
 
-        $isPending = $targetRecord->attendanceCorrectRequest()
+        $pendingRequest = $targetRecord->attendanceCorrectRequest()
+            ->with('attendanceCorrectBreak')
             ->where('status', CorrectRequestStatus::Pending->value)
-            ->exists();
+            ->first();
 
-        return view('attendance.detail', compact('targetDate', 'targetRecord', 'displayDate','isPending'));
+        $isPending = $pendingRequest !== null;
+
+        if ($isPending) {
+            $displayClockIn = $pendingRequest->clock_in;
+            $displayClockOut = $pendingRequest->clock_out;
+            $displayBreaks = $pendingRequest->attendanceCorrectBreak;
+            $displayComment = $pendingRequest->comment;
+        } else {
+            $displayClockIn = $targetRecord->clock_in;
+            $displayClockOut = $targetRecord->clock_out;
+            $displayBreaks = $targetRecord->attendanceBreak;
+            $displayComment = $targetRecord->comment;
+        }
+
+        return view('attendance.detail', compact(
+            'targetDate',
+            'targetRecord',
+            'displayDate',
+            'isPending',
+            'displayClockIn',
+            'displayClockOut',
+            'displayBreaks',
+            'displayComment'
+        ));
     }
 
     /**
