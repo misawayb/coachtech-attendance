@@ -45,6 +45,42 @@ class AttendanceController extends Controller
     {
         $user = User::findOrFail($id);
         $targetMonth = Carbon::parse($request->query('month', now()->format('Y-m')));
+
+        $attendanceList = $this->buildMonthlyAttendanceList($user, $targetMonth);
+
+        return view('admin.attendance.staff', compact('attendanceList', 'targetMonth', 'user'));
+    }
+
+    public function exportCsv(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $targetMonth = Carbon::parse($request->query('month', now()->format('Y-m')));
+
+        $attendanceList = $this->buildMonthlyAttendanceList($user, $targetMonth);
+
+        $filename = $user->name . '_' . $targetMonth->format('Y-m') . '.csv';
+
+        return response()->streamDownload(function () use ($attendanceList) {
+            $stream = fopen('php://output', 'w');
+            fwrite($stream, "\xEF\xBB\xBF");
+            fputcsv($stream, ['日付', '出勤', '退勤', '休憩', '合計']);
+
+            foreach ($attendanceList as $item) {
+                fputcsv($stream, [
+                    $item['date'],
+                    $item['clockIn'],
+                    $item['clockOut'],
+                    $item['breakTime'],
+                    $item['workTime'],
+                ]);
+            }
+
+            fclose($stream);
+        }, $filename, ['Content-Type' => 'text/csv']);
+    }
+
+    private function buildMonthlyAttendanceList(User $user, Carbon $targetMonth)
+    {
         $period = CarbonPeriod::create($targetMonth->copy()->startOfMonth(), $targetMonth->copy()->endOfMonth());
 
         $targetMonthAttendance = AttendanceRecord::where('user_id', $user->id)
@@ -68,7 +104,7 @@ class AttendanceController extends Controller
             ];
         }
 
-        return view('admin.attendance.staff', compact('attendanceList', 'targetMonth', 'user'));
+        return $attendanceList;
     }
 
     public function edit($id)

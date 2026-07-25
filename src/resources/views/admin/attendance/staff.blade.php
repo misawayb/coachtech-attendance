@@ -39,6 +39,9 @@
                 @endforeach
             </table>
         </div>
+        <div class="flex justify-end mt-8">
+            <a href="{{ route('attendance.csv', ['id' => $user->id, 'month' => $targetMonth->format('Y-m')]) }}" class="bg-black text-white font-bold px-8 py-3 rounded-2xl hover:cursor-pointer">CSV出力</a>
+        </div>
     </div>
 </div>
 @endsection

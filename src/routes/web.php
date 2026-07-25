@@ -33,6 +33,7 @@ Route::middleware('admin')->group(function(){
     Route::get('/admin/staff/list', [AdminAttendanceController::class, 'staffIndex'])->name('staff.index');
     Route::get('/admin/stamp_correction_request/list', [AdminStampCorrectionRequestController::class, 'index'])->name('admin.request.index');
     Route::get('/admin/attendance/staff/{id}', [AdminAttendanceController::class, 'staffAttendance'])->name('attendance.index');
+    Route::get('/admin/attendance/staff/{id}/csv', [AdminAttendanceController::class, 'exportCsv'])->name('attendance.csv');
     Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminStampCorrectionRequestController::class, 'show'])->name('correction.show');
     Route::post('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminStampCorrectionRequestController::class, 'store'])->name('correction.update');
 });

@@ -7,7 +7,7 @@ erDiagram
         varchar email
         varchar password
         timestamp email_verified_at
-        boolen admin_status
+        boolean admin_status
         varchar remember_token
         timestamp created_at
         timestamp updated_at
@@ -26,7 +26,7 @@ erDiagram
 
     attendance_breaks{
         bigint id PK
-        bigint attendance_records_id FK
+        bigint attendance_record_id FK
         time break_in
         time break_out
         timestamp created_at
@@ -35,7 +35,7 @@ erDiagram
 
     attendance_correct_requests{
         bigint id PK
-        bigint attendance_records_id FK
+        bigint attendance_record_id FK
         time clock_in
         time clock_out
         varchar comment
@@ -47,7 +47,7 @@ erDiagram
 
     attendance_correct_breaks{
         bigint id PK
-        bigint attendance_records_id FK
+        bigint attendance_correct_request_id FK
         time break_in
         time break_out
         timestamp created_at
