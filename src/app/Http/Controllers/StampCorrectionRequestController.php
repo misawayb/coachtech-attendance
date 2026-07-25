@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\CorrectRequestStatus;
+use App\Http\Requests\StampCorrectionRequest;
 use App\Models\AttendanceCorrectBreak;
 use App\Models\AttendanceCorrectRequest;
 use App\Models\AttendanceRecord;
@@ -39,7 +40,7 @@ class StampCorrectionRequestController extends Controller
         return view('stamp_correction_request.index', compact('requestList', 'status'));
     }
 
-    public function store(Request $request, string $date)
+    public function store(StampCorrectionRequest $request, string $date)
     {
         $user = auth()->user();
 

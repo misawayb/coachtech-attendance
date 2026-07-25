@@ -28,20 +28,48 @@
                     <span class="ml-8">{{ $targetDate->format('n月j日') }}</span>
                 </div>
 
-                <div class="flex items-center border-b border-[#F0EFF2] px-8 py-8">
-                    <span class="w-40 text-[#737373]">出勤・退勤</span>
-                    <input type="time" name="clock_in" value="{{ $displayClockIn ? \Carbon\Carbon::parse($displayClockIn)->format('H:i') : '' }}" class="border border-gray-300 rounded px-2 py-1 w-32" {{ $isPending ? 'disabled' : '' }}>
-                    <span class="mx-4">〜</span>
-                    <input type="time" name="clock_out" value="{{ $displayClockOut ? \Carbon\Carbon::parse($displayClockOut)->format('H:i') : '' }}" class="border border-gray-300 rounded px-2 py-1 w-32" {{ $isPending ? 'disabled' : '' }}>
+                <div class="flex items-start border-b border-[#F0EFF2] px-8 py-8">
+                    <span class="w-40 text-[#737373] pt-1">出勤・退勤</span>
+                    <div class="flex flex-col">
+                        <div class="flex items-center">
+                            <input type="time" name="clock_in" value="{{ old('clock_in', $displayClockIn ? \Carbon\Carbon::parse($displayClockIn)->format('H:i') : '') }}" class="border border-gray-300 rounded px-2 py-1 w-32" {{ $isPending ? 'disabled' : '' }}>
+                            <span class="mx-4">〜</span>
+                            <input type="time" name="clock_out" value="{{ old('clock_out', $displayClockOut ? \Carbon\Carbon::parse($displayClockOut)->format('H:i') : '') }}" class="border border-gray-300 rounded px-2 py-1 w-32" {{ $isPending ? 'disabled' : '' }}>
+                        </div>
+                        @error('clock_in')
+                        <p class="text-red-500 pt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
+
+                @php
+                    $breaksInput = old('breaks');
+                    if ($breaksInput === null) {
+                        $breaksInput = $displayBreaks->map(fn($break) => [
+                            'break_in' => $break->break_in ? \Carbon\Carbon::parse($break->break_in)->format('H:i') : '',
+                            'break_out' => $break->break_out ? \Carbon\Carbon::parse($break->break_out)->format('H:i') : '',
+                        ])->toArray();
+                    }
+                @endphp
+
                 <div id="break-rows">
-                    @foreach ($displayBreaks as $index => $break)
-                    <div class="flex items-center border-b border-[#F0EFF2] px-8 py-8 break-row">
-                        <span class="w-40 text-[#737373]">休憩{{ $index + 1 > 1 ? $index + 1 : '' }}</span>
-                        <input type="time" name="breaks[{{ $index }}][break_in]" value="{{ $break->break_in ? \Carbon\Carbon::parse($break->break_in)->format('H:i') : '' }}" class="border border-gray-300 rounded px-2 py-1 w-32" {{ $isPending ? 'disabled' : '' }}>
-                        <span class="mx-4">〜</span>
-                        <input type="time" name="breaks[{{ $index }}][break_out]" value="{{ $break->break_out ? \Carbon\Carbon::parse($break->break_out)->format('H:i') : '' }}" class="border border-gray-300 rounded px-2 py-1 w-32" {{ $isPending ? 'disabled' : '' }}>
+                    @foreach ($breaksInput as $index => $break)
+                    <div class="flex items-start border-b border-[#F0EFF2] px-8 py-8 break-row">
+                        <span class="w-40 text-[#737373] pt-1">休憩{{ $index + 1 > 1 ? $index + 1 : '' }}</span>
+                        <div class="flex flex-col">
+                            <div class="flex items-center">
+                                <input type="time" name="breaks[{{ $index }}][break_in]" value="{{ $break['break_in'] ?? '' }}" class="border border-gray-300 rounded px-2 py-1 w-32" {{ $isPending ? 'disabled' : '' }}>
+                                <span class="mx-4">〜</span>
+                                <input type="time" name="breaks[{{ $index }}][break_out]" value="{{ $break['break_out'] ?? '' }}" class="border border-gray-300 rounded px-2 py-1 w-32" {{ $isPending ? 'disabled' : '' }}>
+                            </div>
+                            @error("breaks.$index.break_in")
+                            <p class="text-red-500 pt-2">{{ $message }}</p>
+                            @enderror
+                            @error("breaks.$index.break_out")
+                            <p class="text-red-500 pt-2">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                     @endforeach
                 </div>
@@ -54,7 +82,12 @@
 
                 <div class="flex px-8 py-8 border-[#F0EFF2]">
                     <span class="w-40 text-[#737373] pt-2 flex-shrink-0">備考</span>
-                    <textarea name="comment" class="border border-gray-300 rounded px-2 py-1 w-full m-0 h-[72px] resize-none" {{ $isPending ? 'disabled' : '' }}>{{ $displayComment }}</textarea>
+                    <div class="flex flex-col w-full">
+                        <textarea name="comment" class="border border-gray-300 rounded px-2 py-1 w-full m-0 h-[72px] resize-none" {{ $isPending ? 'disabled' : '' }}>{{ old('comment', $displayComment) }}</textarea>
+                        @error('comment')
+                        <p class="text-red-500 pt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
 
@@ -79,7 +112,7 @@
 </template>
 
 <script>
-    let breakIndex = {{ $displayBreaks->count() }};
+    let breakIndex = {{ count($breaksInput) }};
 
     document.getElementById('add-break')?.addEventListener('click', function() {
         const template = document.getElementById('break-row-template').innerHTML;

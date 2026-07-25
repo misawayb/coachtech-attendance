@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminAttendanceUpdateRequest;
 use App\Models\User;
 use App\Models\AttendanceRecord;
 use Illuminate\Http\Request;
@@ -77,7 +78,7 @@ class AttendanceController extends Controller
         return view('admin.attendance.detail', compact('targetRecord'));
     }
 
-    public function update(Request $request, $id)
+    public function update(AdminAttendanceUpdateRequest $request, $id)
     {
         $targetRecord = AttendanceRecord::findOrFail($id);
 
