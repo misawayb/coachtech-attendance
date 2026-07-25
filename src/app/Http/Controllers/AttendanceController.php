@@ -134,6 +134,15 @@ class AttendanceController extends Controller
             $displayComment = $targetRecord->comment;
         }
 
+        $breaksInput = old('breaks', $displayBreaks->map(fn($break) => [
+            'break_in' => $break->break_in ? Carbon::parse($break->break_in)->format('H:i') : '',
+            'break_out' => $break->break_out ? Carbon::parse($break->break_out)->format('H:i') : '',
+        ])->toArray());
+
+        if (!$isPending && !old('breaks')) {
+            $breaksInput[] = ['break_in' => '', 'break_out' => ''];
+        }
+
         return view('attendance.detail', compact(
             'targetDate',
             'targetRecord',
@@ -142,7 +151,8 @@ class AttendanceController extends Controller
             'displayClockIn',
             'displayClockOut',
             'displayBreaks',
-            'displayComment'
+            'displayComment',
+            'breaksInput'
         ));
     }
 }

@@ -43,16 +43,6 @@
                 </div>
 
 
-                @php
-                    $breaksInput = old('breaks');
-                    if ($breaksInput === null) {
-                        $breaksInput = $displayBreaks->map(fn($break) => [
-                            'break_in' => $break->break_in ? \Carbon\Carbon::parse($break->break_in)->format('H:i') : '',
-                            'break_out' => $break->break_out ? \Carbon\Carbon::parse($break->break_out)->format('H:i') : '',
-                        ])->toArray();
-                    }
-                @endphp
-
                 <div id="break-rows">
                     @foreach ($breaksInput as $index => $break)
                     <div class="flex items-start border-b border-[#F0EFF2] px-8 py-8 break-row">

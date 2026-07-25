@@ -75,7 +75,16 @@ class AttendanceController extends Controller
     {
         $targetRecord = AttendanceRecord::with(['attendanceBreak', 'user'])->findOrFail($id);
 
-        return view('admin.attendance.detail', compact('targetRecord'));
+        $breaksInput = old('breaks', $targetRecord->attendanceBreak->map(fn($break) => [
+            'break_in' => $break->break_in ? Carbon::parse($break->break_in)->format('H:i') : '',
+            'break_out' => $break->break_out ? Carbon::parse($break->break_out)->format('H:i') : '',
+        ])->toArray());
+
+        if (!old('breaks')) {
+            $breaksInput[] = ['break_in' => '', 'break_out' => ''];
+        }
+
+        return view('admin.attendance.detail', compact('targetRecord', 'breaksInput'));
     }
 
     public function update(AdminAttendanceUpdateRequest $request, $id)
