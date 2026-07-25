@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="w-full max-w-[680px] my-24">
-    <h1 class="mb-12 text-center text-4xl font-bold">ログイン</h1>
+    <h1 class="my-12 text-center text-4xl font-bold">ログイン</h1>
     <form action="/login" method="post">
         @csrf
         <div class="flex flex-col mb-8">

@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="w-full max-w-[680px] my-24">
-    <h1 class="mb-12 text-center text-[36px] font-bold">会員登録</h1>
+    <h1 class="my-12 text-center text-[36px] font-bold">会員登録</h1>
     <form action="/register" method="post">
         @csrf
         <div class="flex flex-col mb-8">
