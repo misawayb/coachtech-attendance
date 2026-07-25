@@ -22,12 +22,10 @@ Route::middleware('auth')->group(function(){
     Route::get('/attendance/detail/{date}', [AttendanceController::class, 'edit'])->name('attendance.edit');
     Route::post('/attendance/detail/{date}', [StampCorrectionRequestController::class, 'store'])->name('request.store');
     Route::get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'index'])->name('request.index');
-    Route::post('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'show'])->name('request.show');
 });
 
 Route::middleware('admin')->group(function(){
     Route::get('/admin/attendance/list', [AdminAttendanceController::class, 'index'])->name('admin.index');
-    Route::post('/admin/attendance/list', [AdminAttendanceController::class, 'show'])->name('admin.show');
     Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'edit'])->name('admin.edit');
     Route::post('/admin/attendance/{id}', [AdminAttendanceController::class, 'update'])->name('admin.update');
     Route::get('/admin/staff/list', [AdminAttendanceController::class, 'staffIndex'])->name('staff.index');

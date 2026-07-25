@@ -84,7 +84,7 @@ class AttendanceController extends Controller
         $period = CarbonPeriod::create($targetMonth->copy()->startOfMonth(), $targetMonth->copy()->endOfMonth());
 
         $targetMonthAttendance = AttendanceRecord::where('user_id', $user->id)
-            ->whereBetween('date', [$targetMonth->copy()->startOfMonth(), $targetMonth->copy()->endOfMonth()])
+            ->whereBetween('date', [$targetMonth->copy()->startOfMonth()->toDateString(), $targetMonth->copy()->endOfMonth()->toDateString()])
             ->get();
 
         $targetMonthAttendanceByDate = $targetMonthAttendance->keyBy('date');

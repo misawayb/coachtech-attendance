@@ -41,7 +41,7 @@ class StampCorrectionRequest extends FormRequest
             $clockOutTime = $clockOut ? Carbon::createFromFormat('H:i', $clockOut) : null;
 
             if ($clockInTime && $clockOutTime && $clockInTime->gte($clockOutTime)) {
-                $validator->errors()->add('clock_in', '出勤時間もしくは退勤時間が不適切な値です');
+                $validator->errors()->add('clock_in', '出勤時間が不適切な値です');
             }
 
             foreach ($this->input('breaks', []) as $index => $break) {

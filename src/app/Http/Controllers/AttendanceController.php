@@ -22,7 +22,7 @@ class AttendanceController extends Controller
         $today = now()->isoFormat('YYYY年M月D日(ddd)');
         $time = now()->format('H:i');
         $todayRecord = AttendanceRecord::where('user_id', $user->id)
-            ->where('date', today())
+            ->where('date', today()->toDateString())
             ->first();
 
         if ($todayRecord === null) {
@@ -38,7 +38,7 @@ class AttendanceController extends Controller
     {
         $user = auth()->user();
         $todayRecord = AttendanceRecord::where('user_id', $user->id)
-            ->where('date', today())
+            ->where('date', today()->toDateString())
             ->first();
         if ($todayRecord === null) {
             $status = '勤務外';
@@ -49,7 +49,7 @@ class AttendanceController extends Controller
         if ($status === '勤務外') {
             AttendanceRecord::create([
                 'user_id' => $user->id,
-                'date' => today(),
+                'date' => today()->toDateString(),
                 'clock_in' => now()->format('H:i'),
             ]);
         } elseif ($status === '出勤中') {
@@ -76,7 +76,7 @@ class AttendanceController extends Controller
         $period = CarbonPeriod::create($targetMonth->copy()->startOfMonth(), $targetMonth->copy()->endOfMonth());
 
         $targetMonthAttendance = AttendanceRecord::where('user_id', $user->id)
-            ->whereBetween('date', [$targetMonth->copy()->startOfMonth(), $targetMonth->copy()->endOfMonth()])
+            ->whereBetween('date', [$targetMonth->copy()->startOfMonth()->toDateString(), $targetMonth->copy()->endOfMonth()->toDateString()])
             ->get();
 
         $targetMonthAttendanceByDate = $targetMonthAttendance->keyBy('date');
@@ -112,7 +112,7 @@ class AttendanceController extends Controller
 
         $targetRecord = AttendanceRecord::firstOrCreate([
             'user_id' => $user->id,
-            'date' => $targetDate,
+            'date' => $targetDate->toDateString(),
         ]);
 
         $pendingRequest = $targetRecord->attendanceCorrectRequest()
