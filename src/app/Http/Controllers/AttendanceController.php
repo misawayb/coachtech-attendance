@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Attendance;
 use App\Models\AttendanceBreak;
 use App\Models\AttendanceRecord;
 use App\Enums\CorrectRequestStatus;
@@ -145,22 +144,6 @@ class AttendanceController extends Controller
             'displayBreaks',
             'displayComment'
         ));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Attendance $attendance)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Attendance $attendance)
-    {
-        //
     }
 }
 
